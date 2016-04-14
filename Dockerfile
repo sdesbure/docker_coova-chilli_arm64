@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 
 # grep last version of haserl
 WORKDIR /src
-wget http://downloads.sourceforge.net/project/haserl/haserl-devel/haserl-0.9.35.tar.gz
+RUN wget http://downloads.sourceforge.net/project/haserl/haserl-devel/haserl-0.9.35.tar.gz
 
 RUN tar zxvf haserl-0.9.35.tar.gz
 WORKDIR /src/haserl-0.9.35
