@@ -45,8 +45,6 @@ RUN apt-get purge -y git build-essential libtool autoconf automake gengetopt dev
 
 EXPOSE 3990 4990
 
-USER chilli
-
 COPY defaults /etc/chilli
 COPY start_chilli.sh /usr/bin
 
