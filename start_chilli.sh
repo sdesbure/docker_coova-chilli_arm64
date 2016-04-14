@@ -13,8 +13,8 @@ if [[ $? != 4 ]]; then
   exit 1
 fi
 
-SHORT=lDd
-LONG=local,default,debug
+SHORT=l:D:dp:
+LONG=local:,default:,debug,prescript:
 
 PARSED=`getopt --options $SHORT --longoptions $LONG --name "$0" -- "$@"`
 if [[ $? != 0 ]]; then
@@ -32,6 +32,10 @@ while true; do
       defaultFile="$2"
       shift 2
       ;;
+    -p|--prescript)
+      preScript="$2"
+      shift 2
+      ;;
     -d|--debug)
       d=y
       shift
@@ -46,7 +50,8 @@ while true; do
       ;;
   esac
 done
-echo "localConf path: $localFile, defaultFile path: $defaultFile, debug: $d"
+
+echo "localConf path: $localFile, defaultFile path: $defaultFile, debug: $d, prescript: $preScript"
 cp $defaultFile $CHILLI/defaults
 cp $localFile $CHILLI/local.conf
 . /etc/chilli/functions
@@ -54,8 +59,13 @@ cp $localFile $CHILLI/local.conf
 writeconfig
 OPTS="--fg"
 
+if [[ $preScript ]] && [[ -e $preScript ]]; then
+  echo "launching script $preScript"
+  $prescript
+fi
+
 if [[ $d ]]; then
-  OPTS= $OPTS + " --debug"
+  OPTS="$OPTS --debug"
 fi
 echo "options for chilli: $OPTS"
 
