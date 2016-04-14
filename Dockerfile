@@ -47,7 +47,8 @@ EXPOSE 3990 4990
 
 USER chilli
 
-COPY start_chilli.sh /usr/bin/start_chilli.sh
+COPY defaults /etc/chilli
+COPY start_chilli.sh /usr/bin
 
 VOLUME /config
 
