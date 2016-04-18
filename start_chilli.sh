@@ -54,6 +54,7 @@ while true; do
       ;;
   esac
 done
+
 echo "localConf path: $localFile, defaultFile path: $defaultFile, debug: $d, prescript: $preScript, upscript: $upScript"
 cp $defaultFile $CHILLI/defaults
 cp $localFile $CHILLI/local.conf
