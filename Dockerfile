@@ -51,4 +51,4 @@ COPY start_chilli.sh /usr/bin
 VOLUME /config
 
 ENTRYPOINT ["/usr/bin/start_chilli.sh"]
-CMD ["--local", "/config/local.conf", "--default", "/config/defaults", "--prescript", "/config/prescript.sh"]
+CMD ["--local", "/config/local.conf", "--default", "/config/defaults", "--prescript", "/config/prescript.sh", "--upscript", "/config/up.sh"]
