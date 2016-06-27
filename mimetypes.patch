@@ -1,0 +1,17 @@
+diff --git a/src/redir.c b/src/redir.c
+index 8f2afbf..70ae652 100644
+--- a/src/redir.c
++++ b/src/redir.c
+@@ -3615,6 +3615,12 @@ int redir_main(struct redir_t *redir,
+             else if (!strcmp(filename + (namelen - 4), ".chi")){ ctype = "text/html"; parse = 1; }
+             else if (!strcmp(filename + (namelen - 4), ".cjs")){ ctype = "text/javascript"; parse = 1; }
+             else if (!strcmp(filename + (namelen - 5), ".json")) ctype = "application/json";
++            else if (!strcmp(filename + (namelen - 6), ".woff2")) ctype = "application/font-woff2";
++            else if (!strcmp(filename + (namelen - 5), ".woff")) ctype = "application/font-woff";
++            else if (!strcmp(filename + (namelen - 4), ".ttf")) ctype = "application/font-sfnt";
++            else if (!strcmp(filename + (namelen - 4), ".eot")) ctype = "application/vnd.ms-fontobject";
++            else if (!strcmp(filename + (namelen - 4), ".otf")) ctype = "application/font-sfnt";
++            else if (!strcmp(filename + (namelen - 4), ".svg")) ctype = "image/svg+xml";
+             else if (!strcmp(filename + (namelen - 4), ".dat")){ ctype = "application/x-ns-proxy-autoconfig";
+ #ifdef ENABLE_WPAD
+               if (isWPAD && _options.wpadpacfile) {

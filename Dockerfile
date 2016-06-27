@@ -12,8 +12,14 @@ RUN apt-get update && apt-get install -y \
   debhelper \
   libssl-dev \
   iptables \
-  net-tools
+  net-tools \
+  python \
+  libpcap-dev \
+  libnetfilter-queue1 \
+  libnetfilter-queue-dev \
+  supervisor
 
+# COOVA PART
 # grep last version of haserl
 WORKDIR /src
 RUN wget http://downloads.sourceforge.net/project/haserl/haserl-devel/haserl-0.9.35.tar.gz
@@ -30,6 +36,10 @@ WORKDIR /src/coova-chilli
 
 # remove haserl dependency as it's not well installed
 RUN sed -e 's/, haserl//' -i debian/control
+
+# patch redir.c to make it accept fonts file types
+ADD  mimetypes.patch .
+RUN patch -p1 < mimetypes.patch
 
 # create package
 RUN debuild -us -uc -b
@@ -48,7 +58,22 @@ EXPOSE 3990 4990
 COPY defaults /etc/chilli
 COPY start_chilli.sh /usr/bin
 
+# Wombat PART
+# Retrieve nodejs 6.2.2
+WORKDIR /src
+RUN curl https://nodejs.org/dist/v6.2.2/node-v6.2.2-linux-arm64.tar.xz | tar -Jx
+ENV PATH=/src/node-v6.2.2-linux-arm64/bin:${PATH}
+
+# Retrieve Wombat
+RUN curl http://repo.easygonetwork.xyz/Wombat.tar.bz2 | tar -jx
+WORKDIR /src/Wombat
+RUN npm install
+RUN mkdir -p logs && touch logs/wombat.log
+
 VOLUME /config
 
-ENTRYPOINT ["/usr/bin/start_chilli.sh"]
-CMD ["--local", "/config/local.conf", "--default", "/config/default"]
+# Configure supervisord
+COPY supervisor.conf /etc/supervisor/supervisord.conf
+COPY *.sv.conf /etc/supervisor/conf.d/
+
+ENTRYPOINT ["/usr/bin/supervisord"]
