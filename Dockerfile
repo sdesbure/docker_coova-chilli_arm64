@@ -60,7 +60,8 @@ RUN curl https://nodejs.org/dist/v6.2.2/node-v6.2.2-linux-arm64.tar.xz | tar -Jx
 ENV PATH=/src/node-v6.2.2-linux-arm64/bin:${PATH}
 
 # Retrieve Wombat
-RUN curl http://repo.easygonetwork.xyz/Wombat.tar.bz2 | tar -jx
+COPY Wombat.tar.xz
+RUN tar -Jxf Wombat.tar.xz
 WORKDIR /src/Wombat
 RUN npm install
 RUN mkdir -p logs && touch logs/wombat.log
