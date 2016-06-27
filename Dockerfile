@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
   libpcap-dev \
   libnetfilter-queue1 \
   libnetfilter-queue-dev \
+  curl \
   supervisor
 
 # COOVA PART
@@ -47,12 +48,6 @@ RUN debuild -us -uc -b
 # install package
 RUN dpkg -i ../coova-chilli_*.deb
 
-# clean
-RUN apt-get purge -y git build-essential libtool autoconf automake gengetopt devscripts debhelper && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
 EXPOSE 3990 4990
 
 COPY defaults /etc/chilli
@@ -75,5 +70,12 @@ VOLUME /config
 # Configure supervisord
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY *.sv.conf /etc/supervisor/conf.d/
+
+# clean
+RUN apt-get purge -y git build-essential libtool autoconf automake gengetopt devscripts debhelper && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 
 ENTRYPOINT ["/usr/bin/supervisord"]
