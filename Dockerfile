@@ -69,7 +69,7 @@ RUN mkdir -p logs && touch logs/wombat.log
 VOLUME /config
 
 # Configure supervisord
-COPY supervisor.conf /etc/supervisor/supervisord.conf
+COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY *.sv.conf /etc/supervisor/conf.d/
 
 # clean
@@ -80,3 +80,4 @@ RUN apt-get purge -y git build-essential libtool autoconf automake gengetopt dev
 
 
 ENTRYPOINT ["/usr/bin/supervisord"]
+CMD ["-c", "/etc/supervisor/supervisord.conf"]
